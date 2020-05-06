@@ -4,6 +4,7 @@ var titleEl = document.getElementById("title");
 var paragraphEl = document.getElementById("description");
 var timerEl = document.getElementById("timer");
 var startButton = document.getElementById("startButton");
+var mainContent = document.getElementById("mainContent");
 var secondsLeft = 76;
 var userAnswer;
 var correctAnswer = "";
@@ -55,9 +56,11 @@ function timeStarter() {
     var countdown = setInterval(function () {
         secondsLeft--;
         timerEl.textContent = "Time remaining: " + secondsLeft;
-        // if(secondsLeft === 0) {
-        //     clearInterval(timerEl)
-        // }
+        if (secondsLeft === 0) {
+            clearInterval(countdown)
+            titleEl.textContent = "Time is up! Enter your initials below."
+
+        }
     }, 1000);
 }
 
@@ -65,30 +68,58 @@ function timeStarter() {
 //First thing hides button, second displays first question, third is displaying the first answer... need to make all answers display and be buttons....
 quizStarter.addEventListener("click", function () {
     startButton.textContent = " ";
-    titleEl.textContent = quizContent[index].question;
+    //titleEl.textContent = quizContent[index].question;
     paragraphEl.textContent = " ";
-
-    //This makes my answers into buttons.
-    function makeButtons() {
-        for (var i = 0; i < quizContent[0].possibleAnswers.length; i++) {
-            document.getElementById("description").innerHTML += "<button>" + quizContent[0].possibleAnswers[i] + "</button>";
-        }
-    }
     //call function that makes buttons
     makeButtons();
     //calls function to start my timer
     timeStarter();
-
-    function makeClick() {
-        var newButtons = document.getElementsByTagName("button");
-        newButtons.addEventListener("click", function () {
-            newButtons.textContent = " ";
-            index++
-            titleEl.textContent = quizContent[index].question;
-            newButtons.textContent = quizContent[index].possibleAnswers[i];
-        })
-    }
-    makeClick();
+    createContent();
 })
 
+function nextQuestion() {
+    index++
+    paragraphEl.textContent = ""
+    if (event.target.getAttribute("data-value") === quizContent[0].correctAnswer) {
+    } else {
+        secondsLeft -= 10
+    }
+    if (index === quizContent.length) {
+        titleEl.textContent = "All done! Input your initials below!";
+        var formMaker = document.createElement("form");
+        formMaker.setAttribute("id", "endForm");
+        titleEl.appendChild(formMaker);
+
+        var input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.setAttribute("value", "");
+        document.getElementById("endForm").appendChild(input);
+
+        var endButton = document.createElement("button");
+        endButton.setAttribute("value", "Submit");
+        endButton.setAttribute("class", "btn btn-primary");
+        endButton.textContent = "Submit";
+        formMaker.appendChild(endButton);
+
+
+    } else {
+        createContent()
+        makeButtons()
+    }
+}
+
+function makeButtons() {
+    for (var i = 0; i < quizContent[index].possibleAnswers.length; i++) {
+        var btnMaker = document.createElement("button")
+        btnMaker.textContent = quizContent[index].possibleAnswers[i]
+        btnMaker.setAttribute("data-value", quizContent[index].possibleAnswers[i])
+        btnMaker.addEventListener("click", nextQuestion)
+        paragraphEl.appendChild(btnMaker)
+    }
+}
+
+
+function createContent() {
+    titleEl.textContent = quizContent[index].question;
+}
 
