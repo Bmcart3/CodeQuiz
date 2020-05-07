@@ -6,6 +6,7 @@ var initials = localStorage.getItem("intials");
 
 inputInitials.textContent = initials;
 
-submitBtn.addEventListener("click", function(){
+submitBtn.addEventListener("click", function(event){
+    event.preventDefault
     
 })

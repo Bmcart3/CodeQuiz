@@ -53,7 +53,7 @@ var quizContent = [
 
 //This function starts the timer in the top right. Function is called within quizStarter button click.
 function timeStarter() {
-    var countdown = setInterval(function () {
+    var countdown = setInterval(function() {
         secondsLeft--;
         timerEl.textContent = "Time remaining: " + secondsLeft;
         if (secondsLeft === 0) {
@@ -65,10 +65,8 @@ function timeStarter() {
 }
 
 //This will be the on click function to start the quiz.
-//First thing hides button, second displays first question, third is displaying the first answer... need to make all answers display and be buttons....
 quizStarter.addEventListener("click", function () {
     startButton.textContent = " ";
-    //titleEl.textContent = quizContent[index].question;
     paragraphEl.textContent = " ";
     //call function that makes buttons
     makeButtons();
@@ -100,8 +98,7 @@ function nextQuestion() {
         endButton.setAttribute("class", "btn btn-primary");
         endButton.textContent = "Submit";
         formMaker.appendChild(endButton);
-
-
+        //Need to get this button to redirect to highscore. Not sure how to implement using window.location.href with a dynamically created button.
     } else {
         createContent()
         makeButtons()
